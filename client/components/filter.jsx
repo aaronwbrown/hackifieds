@@ -19,6 +19,7 @@ const Filter = props => {
 
   const mouseDown = (e) => {
     console.log(e)
+    console.log('refs: ', ref)
   };
   // props.listings.forEach( listing => {
   //   if ( ! )
@@ -31,7 +32,7 @@ const Filter = props => {
   //Return the filter component
   return (
     <ul>
-        <select value="location" onMouseDown={mouseDown} name="Neighborhood" onChange={props.handleFilterItemClick}>
+        <select ref="location" onMouseDown={mouseDown} name="Neighborhood" onChange={props.handleFilterItemClick}>
       { filterLocs.map(loc =>
           <option value={loc}>{loc}</option>
       )}
