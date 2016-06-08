@@ -1,4 +1,4 @@
-import { DropdownButton, MenuItem } from 'react-bootstrap';
+import React from 'react';
 
 const Filter = props => {
   console.log(props);
@@ -17,17 +17,25 @@ const Filter = props => {
     locations['All']++;
   });
 
+  const mouseDown = (e) => {
+    console.log(e)
+  };
+  // props.listings.forEach( listing => {
+  //   if ( ! )
+  // });
+
+
   //Sort the filter items alphabetically
   filterLocs.sort();
 
   //Return the filter component
   return (
-    <ul className='filter list-group'>
-        <DropdownButton title="Neighborhood" className="filter-item list-group-item" id={props.listings}>
+    <ul>
+        <select value="location" onMouseDown={mouseDown} name="Neighborhood" onChange={props.handleFilterItemClick}>
       { filterLocs.map(loc =>
-          <MenuItem id={loc} onClick={props.handleFilterItemClick}>{loc}</MenuItem>
+          <option value={loc}>{loc}</option>
       )}
-        </DropdownButton>
+        </select>
     </ul>
   );
 };

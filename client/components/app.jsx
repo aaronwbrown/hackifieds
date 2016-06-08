@@ -68,9 +68,9 @@ class App extends React.Component {
 
   handleFilterItemClick (event) {
     //Set the current activeFilter value
-    console.log('eventtarget: ', typeof event.target.id);
-    console.log('af', this.state.activeFilter)
-    this.setState({activeFilter: event.target.id});
+    console.log('event target: ', event.currentTarget.value);
+    console.log('activeFilter: ', this.state.activeFilter)
+    this.setState({activeFilter: event.target.value});
   }
 
   handleListingEntryClick (event) {

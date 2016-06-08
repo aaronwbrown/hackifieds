@@ -1,0 +1,2 @@
+exports.GITHUB_CLIENT_ID = 'f10ef13364cea09b22aa';
+exports.GITHUB_CLIENT_SECRET = 'c74b25c4422374fdede0b546d26a6d6946edbeb3';
