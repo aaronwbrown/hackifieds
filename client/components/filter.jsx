@@ -2,40 +2,41 @@ import React from 'react';
 
 const Filter = props => {
   console.log(props);
-  //Set default values for All items
-  let locations = {All: 0};
-  let filterLocs = ['All'];
+  //Set default values for location
+  const locations = {All: 0};
+  const filterLocs = ['All'];
+  // Set default for price
+  const filterPrice = [];
 
-  //Populate the filtered list
   props.listings.forEach( listing => {
+    // ***** LOCATION ***** //
     if( !locations[listing.location] ) {
       locations[listing.location] = 0;
       filterLocs.push(listing.location);
     }
-    //Listings count for each filter item
+    // Listings count for each filter item
     locations[listing.location]++;
     locations['All']++;
   });
 
-  const mouseDown = (e) => {
-    console.log(e)
-    console.log('refs: ', ref)
-  };
-  // props.listings.forEach( listing => {
-  //   if ( ! )
-  // });
+  props.listings.forEach ( listing => {
+    filterPrice.push(listing.price);
+  })
 
-
-  //Sort the filter items alphabetically
+  // Sort the filter items alphabetically
   filterLocs.sort();
 
   //Return the filter component
   return (
     <ul>
-        <select ref="location" onMouseDown={mouseDown} name="Neighborhood" onChange={props.handleFilterItemClick}>
-      { filterLocs.map(loc =>
-          <option value={loc}>{loc}</option>
-      )}
+        <select name="Neighborhood" onChange={props.handleFilterItemClick}>
+          {filterLocs.map(loc =>
+            <option value={loc}>{loc}</option>
+          )}
+        </select>
+        <select name="Price" onChange={props.onPriceFilter}>
+          <option value="Descend">Descend</option>
+          <option value="Ascend">Ascend</option>
         </select>
     </ul>
   );

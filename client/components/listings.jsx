@@ -8,13 +8,18 @@ const Listings = props => {
     if (props.activeFilter === 'All' || listing.location === props.activeFilter) {
       filtered.push(listing);
     }
+    else if (props.priceFilter === 'Ascend') {
+      filtered.push(listing)
+      filtered = filtered.sort();
+      console.log('pants');
+    }
   });
   //Return the filtered population only & show a specific listing's info if it has been clicked
   return (
-    <div className="listings">
-      {filtered.map(listing => 
-        (props.activeListing && props.activeListing === listing.listingId) ? 
-        <ListingInfo handleListingInfoClick = {props.handleListingInfoClick} listing={listing} user={props.user}/> : 
+    <div>
+      {filtered.map(listing =>
+        (props.activeListing && props.activeListing === listing.listingId) ?
+        <ListingInfo handleListingInfoClick = {props.handleListingInfoClick} listing={listing} user={props.user}/> :
         <ListingEntry key={listing.listingId} handleListingEntryClick={props.handleListingEntryClick} listing={listing}/>)
       }
     </div>

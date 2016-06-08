@@ -6,9 +6,7 @@ import NewListing from './newListing.jsx';
 import helpers from '../lib/helpers.js';
 import { Grid, Row, Col, ButtonToolbar } from 'react-bootstrap';
 
-
 class App extends React.Component {
-
   constructor (props) {
     super(props);
 
@@ -16,8 +14,9 @@ class App extends React.Component {
     this.state = {
       categories: [],
       listings: [],
-      navCategory: 'Rent',  //Default listings category to show
-      activeFilter: 'All',  //Default filter to show All
+      navCategory: 'Rent',   // Default listings category to show
+      activeFilter: 'All',   // Default filter to show All
+      priceFilter: 'Descend', // Default filter to descend price
       activeListing: parseInt(window.localStorage.getItem('activeListing')) || null, //If activeListing exists in localStorage, set state to that listing
       currentUser: {},
       currentView: window.localStorage.getItem('currentView') || 'listingsView'
@@ -66,11 +65,19 @@ class App extends React.Component {
     this.retrieveListings(value);
   }
 
+  // ****** FILTERING ****** \\
   handleFilterItemClick (event) {
     //Set the current activeFilter value
-    console.log('event target: ', event.currentTarget.value);
-    console.log('activeFilter: ', this.state.activeFilter)
-    this.setState({activeFilter: event.target.value});
+    this.setState({
+      activeFilter: event.target.value,
+    });
+  }
+
+  onPriceFIlter (event) {
+    this.setState({
+      priceFilter: event.target.value,
+    })
+    console.log('event', event);
   }
 
   handleListingEntryClick (event) {
@@ -114,31 +121,34 @@ class App extends React.Component {
 
     if ( this.state.currentView === 'listingsView' ) {
       viewLogic =
-        <Row className="show-grid">
-          <Col xs={1} md={1} lg={1}></Col>
-          <Col xs={2} md={2} lg={2}>
-            <Filter handleFilterItemClick={this.handleFilterItemClick.bind(this)}
-                    listings={this.state.listings}/>
+        <Row>
+          <Col md={2}>
+            <Filter
+              handleFilterItemClick={this.handleFilterItemClick.bind(this)}
+              listings={this.state.listings}/>
           </Col>
-          <Col xs={9} md={9} lg={9}>
-            <Listings handleListingEntryClick={this.handleListingEntryClick.bind(this)}
-                      handleListingInfoClick={this.handleListingInfoClick.bind(this)}
-                      activeFilter={this.state.activeFilter}
-                      activeListing={this.state.activeListing}
-                      listings={this.state.listings}
-                      user={this.state.currentUser}/>
+          <Col md={8}>
+            <Listings
+              handleListingEntryClick={this.handleListingEntryClick.bind(this)}
+              handleListingInfoClick={this.handleListingInfoClick.bind(this)}
+              activeFilter={this.state.activeFilter}
+              activeListing={this.state.activeListing}
+              listings={this.state.listings}
+              user={this.state.currentUser}/>
           </Col>
+          <Col md={2}></Col>
         </Row>;
-    } else if ( (Object.keys(this.state.currentUser).length !== 0)
-               && (this.state.currentView === 'newListingView') ) {
+    } else if ( (Object.keys(this.state.currentUser).length !== 0) &&
+                (this.state.currentView === 'newListingView') ) {
       viewLogic =
-        <Row className="show-grid">
-          <Col xs={12} md={12} lg={12}>
-            <NewListing categories={this.state.categories}
-                        navCategory={this.state.navCategory}
-                        user={this.state.currentUser}
-                        clickHandler={this.sendListing.bind(this)}
-                        handleNewListingClose={this.handleNewListingClose.bind(this)}/>
+        <Row>
+          <Col>
+            <NewListing
+              categories={this.state.categories}
+              navCategory={this.state.navCategory}
+              user={this.state.currentUser}
+              clickHandler={this.sendListing.bind(this)}
+              handleNewListingClose={this.handleNewListingClose.bind(this)}/>
           </Col>
         </Row>;
     }
@@ -157,7 +167,7 @@ class App extends React.Component {
 
     let profile;
     if (Object.keys(this.state.currentUser).length !== 0) {
-      profile = 
+      profile =
       <div>
         <img src={this.state.currentUser.profilePic} alt="Profile Pic" height="42" width="42" />
         <div>{this.state.currentUser.firstName} {this.state.currentUser.lastName}</div>
