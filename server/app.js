@@ -57,7 +57,7 @@ function(accessToken, refreshToken, profile, done) {
       'User-Agent': profile.username,
     },
   };
-   
+
   request(options, function (err, data) {
     var authorized = false;
     if (err) {
@@ -68,14 +68,14 @@ function(accessToken, refreshToken, profile, done) {
           if (org.login === 'hackreactor') {
             authorized = true;
             console.log('found hackreactor as org, authenticating the user');
-            db.User.findOrCreate({ 
-              where: { 
+            db.User.findOrCreate({
+              where: {
                 username: profile.username,
                 firstName: profile.displayName.split(' ')[0],
                 lastName: profile.displayName.split(' ')[profile.displayName.split(' ').length - 1],
                 email: profile.emails[0].value,
                 profilePic: profile._json.avatar_url,
-              } 
+              }
             })
             .spread(function(user, created) {
               return done(null, user);
@@ -84,7 +84,7 @@ function(accessToken, refreshToken, profile, done) {
         });
         if (!authorized) {
           return done('Sorry, you are not part of the Hack Reactor community. If you are, please make your Hack Reactor organization visibility public on github. Please refer to https://help.github.com/articles/publicizing-or-hiding-organization-membership/');
-        } 
+        }
       } else {
         return done('Sorry, you are not part of the Hack Reactor community. If you are, please make your Hack Reactor organization visibility public on github. Please refer to https://help.github.com/articles/publicizing-or-hiding-organization-membership/');
       }
@@ -139,8 +139,17 @@ app.get('/api/logout', function(req, res) {
     console.log( req.session);
     res.redirect('/');
   });
-
 });
+
+// ********** FILTERING ********** \\
+app.route('/api/filters')
+  .get(function(req, res) {
+    console.log('$$$$req', req.query);
+    listingsCtrl.getFiltered(req.query, function(statusCode, results) {
+      res.status(statusCode).send(results);
+      console.log('$$$$results', results);
+    });
+  });
 
 // Start server, listen for client requests on designated port
 console.log( 'hackifieds server listening on 3000....' );

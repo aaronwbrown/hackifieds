@@ -30,6 +30,44 @@ exports.getAll = function(category, callback) {
     });
 };
 
+// Controller method - get filtered results
+exports.getFiltered = function(filters, callback) {
+  console.log('$$$filters', filters);
+  console.log('$$$price', filters.price);
+  // const price = +filters.price;
+  // console.log(typeof price);
+  var where = {};
+  if (filters.price !== undefined) { where.price = filters.price; }
+  if (filters.location !== undefined) { where.location = filters.location; }
+
+  db.Listing.findAll({
+    include:
+    [{
+      model: db.Category,
+      attributes: ['categoryName'],
+      where: {categoryName: filters.category},
+    },
+    {
+      model: db.User,
+      attributes: ['username', 'phone', 'email']
+    },
+    {
+      model: db.Image,
+      attributes: ['path']
+    }],
+    order: 'createdAt DESC',
+    where: {}, raw: true
+  })
+    .then(function(listings) {
+      callback(200, listings);
+      console.log('$$$$listings', listings);
+    })
+    .catch(function(error) {
+      console.error(error);
+      callback(404, error);
+    });
+};
+
 //Controller method - add a listings to DB
 exports.addOne = function(listing, images, callback) {
   db.Listing.create(listing)

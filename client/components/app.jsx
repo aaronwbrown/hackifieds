@@ -66,18 +66,12 @@ class App extends React.Component {
   }
 
   // ****** FILTERING ****** \\
-  handleFilterItemClick (event) {
+  handleFilterItemClick (data) {
     //Set the current activeFilter value
-    this.setState({
-      activeFilter: event.target.value,
-    });
-  }
-
-  onPriceFIlter (event) {
-    this.setState({
-      priceFilter: event.target.value,
-    })
-    console.log('event', event);
+    data.category = this.state.navCategory;
+    console.log('hFIC', data);
+    helpers.getFilteredResults(data, filters => console.log('filters', filters));
+    console.log(this.state.listings);
   }
 
   handleListingEntryClick (event) {

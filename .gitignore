@@ -23,6 +23,9 @@ db/dbPassword.js
 .floo
 .flooignore
 
+# WORKFLOW
+notes.todo
+
 # VIM
 *.swp
 *.swo
