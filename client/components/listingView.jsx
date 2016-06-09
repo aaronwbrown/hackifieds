@@ -14,7 +14,7 @@ class ListingView extends React.Component {
   componentWillMount() {
     helpers.getListings(this.props.route.type, data => this.setState({listings: data}) )
   }
-  
+
   componentWillReceiveProps(nextProps) {
     console.log('receiving props',nextProps.location.query.type);
     this.setState({
@@ -23,11 +23,19 @@ class ListingView extends React.Component {
     helpers.getListings(nextProps.location.query.type, data => this.setState({listings: data}) )
   }
 
+  // ****** FILTERING ****** \\
+  handleFilterItemClick (data) {
+    //Set the current activeFilter value
+    data.category = this.state.navCategory;
+    helpers.getFilteredResults(data, filters => console.log('filters', filters));
+    console.log(this.state.listings);
+  }
+
   render () {
     return (
       <div>
         <FilterView page={this.state.page} />
-        {this.state.listings.map((listing, i) => 
+        {this.state.listings.map((listing, i) =>
           <ListEntryView key={i} listing={listing} />
         )}
       </div>

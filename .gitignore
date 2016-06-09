@@ -25,6 +25,7 @@ db/dbPassword.js
 
 # WORKFLOW
 notes.todo
+recreate.sh
 
 # VIM
 *.swp
