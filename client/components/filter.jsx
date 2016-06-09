@@ -66,10 +66,10 @@ const Filter = props => {
       <div>
         <select name="Price" id="price" onChange={handleFilterSubmit.bind(this)}>
             <option value="All" selected>All</option>
-            <option value="1000">0 - 1000</option>
-            <option value="2000">$1000 - $2000</option>
-            <option value="3000">$2000 - $3000</option>
-            <option value="4000">$3000 - $4000</option>
+            <option value="1,1000">0 - 1000</option>
+            <option value="1001,2000">$1000 - $2000</option>
+            <option value="2001,3000">$2000 - $3000</option>
+            <option value="3001,4000">$3000 - $4000</option>
             <option value="5000">$5000+</option>
         </select>
       </div>
@@ -79,7 +79,7 @@ const Filter = props => {
             <option value="2">{"<2"}</option>
             <option value="5">{"<5"}</option>
             <option value="10">{"<10"}</option>
-            <option value="15">{"15+"}</option>
+            <option value="11">{"10+"}</option>
         </select>
       </div>
       <div>

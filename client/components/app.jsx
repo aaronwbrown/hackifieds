@@ -69,7 +69,6 @@ class App extends React.Component {
   handleFilterItemClick (data) {
     //Set the current activeFilter value
     data.category = this.state.navCategory;
-    console.log('hFIC', data);
     helpers.getFilteredResults(data, filters => console.log('filters', filters));
     console.log(this.state.listings);
   }

@@ -32,40 +32,52 @@ exports.getAll = function(category, callback) {
 
 // Controller method - get filtered results
 exports.getFiltered = function(filters, callback) {
-  console.log('$$$filters', filters);
-  console.log('$$$price', filters.price);
-  // const price = +filters.price;
-  // console.log(typeof price);
-  var where = {};
-  if (filters.price !== undefined) { where.price = filters.price; }
-  if (filters.location !== undefined) { where.location = filters.location; }
+  // constructing where object body
+  const filteredWhere = {};
+  if (Object.keys(filters).length <= 1) {
+    filteredWhere = {};
+  } else {
+    // filter price
+    // ********** RENT ********** \\
+    if (filters.price !== undefined) {
+      if (filters.price[0] !== undefined && filters.price[1] !== undefined) {
+        price = {$gt: filters.price.split(',')[0], $lte: filters.price.split(',')[1]};
+      } else {
+        price = {$gte: filters.price.split(',')[0]};
+      }
+      filteredWhere.price = price;
+      console.log(filteredWhere.price);
+    }
+    // filter location
+    if (filters.location !== undefined) { filteredWhere.location = filters.location; }
 
-  db.Listing.findAll({
-    include:
-    [{
-      model: db.Category,
-      attributes: ['categoryName'],
-      where: {categoryName: filters.category},
-    },
-    {
-      model: db.User,
-      attributes: ['username', 'phone', 'email']
-    },
-    {
-      model: db.Image,
-      attributes: ['path']
-    }],
-    order: 'createdAt DESC',
-    where: {}, raw: true
-  })
-    .then(function(listings) {
-      callback(200, listings);
-      console.log('$$$$listings', listings);
+    db.Listing.findAll({
+      include:
+      [{
+        model: db.Category,
+        attributes: ['categoryName'],
+        where: {categoryName: filters.category},
+      },
+      {
+        model: db.User,
+        attributes: ['username', 'phone', 'email']
+      },
+      {
+        model: db.Image,
+        attributes: ['path']
+      }],
+      order: 'createdAt DESC',
+      where: filteredWhere, raw: true
     })
-    .catch(function(error) {
-      console.error(error);
-      callback(404, error);
-    });
+      .then(function(listings) {
+        callback(200, listings);
+        console.log('$$$$listings', listings);
+      })
+      .catch(function(error) {
+        console.error(error);
+        callback(404, error);
+      });
+  }
 };
 
 //Controller method - add a listings to DB
