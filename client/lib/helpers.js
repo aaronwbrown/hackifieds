@@ -50,7 +50,6 @@ const userAuth = callback => {
     method: 'GET',
     success: data => {
       callback(data);
-      globalVar.callback(data);
     },
     error: err => console.log( 'Error getting session from server.', err),
   });
