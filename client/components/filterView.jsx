@@ -10,7 +10,8 @@ const FilterView = (props) => {
     } else if (target === 'RoomType') {
       data.roomtype = e.target.value;
     }
-    props.handleFilterItemClick(data);
+    data.category = props.page;
+    props.handleClick(data);
   }
 
   return (
